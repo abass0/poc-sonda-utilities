@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: poc-sonda-utilities
+  name: cs-api-servicos-online-hml
+data:
+  # spring boot context
+  PORTA: '8080'
+
+  # oracle settings
+  DATASOURCE_URL: 'jdbc:oracle:thin:@172.28.187.13:1521:dscssp2h'
+
+  # hibernate config
+  SPRING_JPA_DATABASE_PLATFORM: 'com.sonda.servicos.online.config.CustomOracleDialect'
+  SPRING_SHOW_SQL: 'true'
+  SPRING_OPEN_IN_VIEW: 'false'
+  SPRING_HIBERNATE_PARAM_NULL_PASSING: 'true'
+
+  # swagger
+  SWAGGER_AMBIENTE: HOMOLOGACAO
+  LOGGING_LEVEL: 'INFO' 

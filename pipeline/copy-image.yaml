@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: copy-image
+  namespace: poc-sonda-utilities
+spec:
+  params:
+    - name: SOURCE_IMAGE
+      type: string
+    - name: SOURCE_TLS_VERIFY
+      type: string
+      default: 'false'
+    - name: DESTINATION_IMAGE
+      type: string
+    - name: DESTINATION_TLS_VERIFY
+      type: string
+      default: 'false'
+  steps:
+    - name: skopeo-copy
+      image: registry.redhat.io/rhel9/skopeo@sha256:23c9ed4af1f42614bdc56309452568b2110a67f23102f42f6a6582a63b63dcdb
+      command:
+        - skopeo
+      args:
+        - copy
+        - $(params.SOURCE_IMAGE)
+        - $(params.DESTINATION_IMAGE)
+        - --src-tls-verify=$(params.SOURCE_TLS_VERIFY)
+        - --dest-tls-verify=$(params.DESTINATION_TLS_VERIFY)
