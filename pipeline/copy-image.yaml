@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: copy-image
-  namespace: poc-sonda-utilities
+  namespace: sonda
 spec:
   params:
     - name: SOURCE_IMAGE
