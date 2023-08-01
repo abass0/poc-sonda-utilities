@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: copy-image
-  namespace: sonda
+  namespace: teste
 spec:
   params:
     - name: SOURCE_IMAGE
