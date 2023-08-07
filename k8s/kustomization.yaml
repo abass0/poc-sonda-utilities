@@ -3,4 +3,3 @@ resources:
 - csi-configmap.yaml
 - csi-secret.yaml
 - csi-service.yaml
-
