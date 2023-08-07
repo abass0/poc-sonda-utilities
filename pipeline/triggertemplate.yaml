@@ -1,0 +1,30 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: sonda-cs-api-trig-template
+spec:
+  params:
+    - name: git-revision
+    - name: git-commit-message
+    - name: git-repo-url
+    - name: git-repo-name
+    - name: content-type
+    - name: pusher-name
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        labels:
+          tekton.dev/pipeline: cs-api-servicos-online
+        name: cs-api-$(uid)
+      spec:
+        params:
+          - name: APP_NAME
+            value: $(tt.params.git-repo-name)
+          - name: GIT_REPO
+            value: $(tt.params.git-repo-url)
+          - name: GIT_REVISION
+            value: $(tt.params.git-revision)
+        pipelineRef:
+          name: cs-api-servicos-online
