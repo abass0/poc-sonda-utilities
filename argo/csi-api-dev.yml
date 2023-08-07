@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: csi-api-dev
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: dotnetcore
+    server: https://kubernetes.default.svc 
+  project: default 
+  source: 
+    path: environments/dev
+    repoURL: https://github.com/abass0/poc-sonda-utilities
+    targetRevision: main
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

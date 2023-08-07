@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: update-deployment
-  namespace: teste
+  namespace: sonda
 spec:
   params:
     - name: GIT_REPOSITORY

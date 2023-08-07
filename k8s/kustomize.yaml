@@ -1,0 +1,6 @@
+resources:
+- csi-deployment.yaml
+- csi-configmap.yaml
+- csi-secret.yaml
+- csi-service.yaml
+

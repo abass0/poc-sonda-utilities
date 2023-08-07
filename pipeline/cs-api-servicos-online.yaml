@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: cs-api-servicos-online
-  namespace: teste
+  namespace: sonda
 spec:
   params:
     - name: SOURCE_IMAGE

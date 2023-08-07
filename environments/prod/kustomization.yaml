@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - ../../k8s/
+patches:
+# This patch targets the Namespace resource and changes the
+# value of metadata.name to "project-memes-prod"
+- target:
+    kind: Namespace
+    name: for-replacement
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: csi-api-prod
