@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: sonda
+  #namespace: sonda
   name: cs-api-servicos-online-hml
 data:
   # spring boot context
