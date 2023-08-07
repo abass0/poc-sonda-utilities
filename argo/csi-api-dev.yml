@@ -5,7 +5,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   destination:
-    namespace: sonda
+    namespace: csi-api-dev
     server: https://kubernetes.default.svc 
   project: default 
   source: 
