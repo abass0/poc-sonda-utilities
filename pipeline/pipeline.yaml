@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: cs-api-servicos-online
-  namespace: poc-sonda-utilities
+  #namespace: poc-sonda-utilities
 spec:
   params:
   - name: SOURCE_IMAGE
