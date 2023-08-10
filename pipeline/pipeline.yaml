@@ -1,12 +1,8 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  creationTimestamp: "2023-08-09T20:25:27Z"
-  generation: 1
   name: cs-api-servicos-online
   namespace: poc-sonda-utilities
-  resourceVersion: "13675106"
-  uid: 743bafdb-c938-472c-86c6-4847a607f30b
 spec:
   params:
   - name: SOURCE_IMAGE
