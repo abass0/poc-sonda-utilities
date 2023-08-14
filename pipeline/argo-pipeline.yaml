@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: cs-api-servicos-online
+  #namespace: poc-sonda-utilities
+spec:
+  params:
+  - name: SOURCE_IMAGE
+    type: string
+  - default: "false"
+    name: SOURCE_TLS_VERIFY
+    type: string
+  - name: DESTINATION_IMAGE
+    type: string
+  - default: "false"
+    name: DESTINATION_TLS_VERIFY
+    type: string
+  - default: oc rollout latest dc/cs-api-servicos-online
+    name: SCRIPT
+    type: string
+  tasks:
+  - name: copy-image
+    params:
+    - name: SOURCE_IMAGE
+      value: $(params.SOURCE_IMAGE)
+    - name: SOURCE_TLS_VERIFY
+      value: $(params.SOURCE_TLS_VERIFY)
+    - name: DESTINATION_IMAGE
+      value: $(params.DESTINATION_IMAGE)
+    - name: DESTINATION_TLS_VERIFY
+      value: $(params.DESTINATION_TLS_VERIFY)
+    taskRef:
+      kind: Task
+      name: copy-image
+  - name: update-deployment
+    params:
+    - name: SCRIPT
+      value: $(params.SCRIPT)
+    - name: VERSION
+      value: latest
+    runAfter:
+    - copy-image
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client

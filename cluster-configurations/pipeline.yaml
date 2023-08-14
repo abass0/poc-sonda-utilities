@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: cs-api-servicos-online
+  #namespace: cs-homolog
+spec:
+  params:
+  - name: SOURCE_IMAGE
+    type: string
+  - default: "false"
+    name: SOURCE_TLS_VERIFY
+    type: string
+  - name: DESTINATION_IMAGE
+    type: string
+  - default: "false"
+    name: DESTINATION_TLS_VERIFY
+    type: string
+  - default: oc rollout latest dc/cs-api-servicos-online
+    name: SCRIPT
+    type: string
+  - default: cs-api-servicos-online
+    name: APP_NAME
+    type: string
+  tasks:
+  - name: copy-image
+    params:
+    - name: SOURCE_IMAGE
+      value: $(params.SOURCE_IMAGE)
+    - name: SOURCE_TLS_VERIFY
+      value: $(params.SOURCE_TLS_VERIFY)
+    - name: DESTINATION_IMAGE
+      value: $(params.DESTINATION_IMAGE)
+    - name: DESTINATION_TLS_VERIFY
+      value: $(params.DESTINATION_TLS_VERIFY)
+    taskRef:
+      kind: Task
+      name: copy-image
+  - name: update-deployment
+    params:
+    - name: SCRIPT
+      value: $(params.SCRIPT)
+    - name: VERSION
+      value: latest
+    runAfter:
+    - copy-image
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client
+  - name: tag-image
+    params:
+    - name: SCRIPT
+      value: '   oc tag cs-homolog/$(params.APP_NAME):4231 cs-qa/$(params.APP_NAME):promote-stage'
+    - name: VERSION
+      value: latest
+    runAfter:
+    - update-deployment
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client
+  - name: deploy-qa
+    params:
+    - name: SCRIPT
+      value: "   oc project cs-qa\n\n   oc delete all --selector app=$(params.APP_NAME)\n\n
+        \  oc new-app cs-qa/$(params.APP_NAME):promote-stage -n cs-qa --as-deployment-config\n\n
+        \  oc scale --replicas=3 dc $(params.APP_NAME)\n   \n   oc set resources deploymentconfig
+        cs-api-servicos-online --limits=cpu=500m,memory=1000Mi --requests=cpu=250m,memory=500Mi\n
+        \  "
+    - name: VERSION
+      value: latest
+    runAfter:
+    - tag-image
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client
