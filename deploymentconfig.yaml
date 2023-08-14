@@ -11,20 +11,9 @@ items:
       app: cs-api-servicos-online
       deploymentconfig: cs-api-servicos-online
     strategy:
-      activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
       type: Rolling
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftWebConsole
-        creationTimestamp: null
         labels:
           app: cs-api-servicos-online
           deploymentconfig: cs-api-servicos-online
@@ -42,15 +31,6 @@ items:
               memory: 1000Mi
             requests:
               cpu: 250m
-              memory: 500Mi
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-    test: false
     triggers:
     - imageChangeParams:
         automatic: true
