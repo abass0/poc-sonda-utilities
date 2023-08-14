@@ -3,7 +3,6 @@ items:
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
     name: cs-api-servicos-online
-    namespace: cs-homolog
   spec:
     replicas: 3
     revisionHistoryLimit: 10
@@ -39,7 +38,5 @@ items:
         from:
           kind: ImageStreamTag
           name: cs-api-servicos-online:4231
-          namespace: cs-homolog
-        lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/cs-homolog/cs-api-servicos-online@sha256:a9030c8878d61c2e63ef62330c06666c9e4bcb99d6d4e90530111a4ee2f4dab7
       type: ImageChange
     - type: ConfigChange
