@@ -29,8 +29,8 @@ spec:
           ports:
             - containerPort: 8080
           # Config from ConfigMap
-          envFrom:
-            - secretRef:
-                name: cs-api-servicos-online-hml
-            - configMapRef:
-                name: cs-api-servicos-online-hml
+          #envFrom:
+          #  - secretRef:
+          #      name: cs-api-servicos-online-hml
+          #  - configMapRef:
+          #      name: cs-api-servicos-online-hml
