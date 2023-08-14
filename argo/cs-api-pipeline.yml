@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: csi-api-pipeline
+  name: cs-api-pipeline
   namespace: openshift-gitops
 spec:
   destination:
