@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: cs-api-servicos-online
-          image: image-registry.openshift-image-registry.svc.cluster.local:5000/sonda/cs-api-servicos-online:4231
+          image: image-registry.openshift-image-registry.svc.cluster.local:5000/teste/cs-api-servicos-online:4231
           resources:
             requests:
               cpu: "250m"
