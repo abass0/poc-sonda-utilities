@@ -1,12 +1,8 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  creationTimestamp: "2023-08-29T14:26:23Z"
-  generation: 5
-  name: cat-branch-readme
-  namespace: teste
-  resourceVersion: "778435"
-  uid: a5e86349-c2c4-476b-b96d-1de182735855
+  name: cs-api-pipeline
+ # namespace: teste
 spec:
   description: |
     cat-branch-readme takes a git repository and a branch name and
