@@ -8,8 +8,12 @@
 
 **Pipeline permission user policies:** 
 ---
-``` oc adm policy add-role-to-group edit system:serviceaccounts -n cs-qa
-    oc adm policy add-role-to-group edit system:serviceaccounts -n cs-homolog
-    oc adm policy add-role-to-user system:image-puller system:serviceaccounts:cs-homolog -n cs-qa
-    oc adm policy add-role-to-user system:deployer system:serviceaccounts:cs-qa -n cs-homolog
+``` 
+oc adm policy add-role-to-group edit system:serviceaccounts -n cs-qa
+
+oc adm policy add-role-to-group edit system:serviceaccounts -n cs-homolog
+
+oc adm policy add-role-to-user system:image-puller system:serviceaccounts:cs-homolog -n cs-qa
+
+oc adm policy add-role-to-user system:deployer system:serviceaccounts:cs-qa -n cs-homolog
 ```  
