@@ -1,0 +1,126 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  creationTimestamp: "2023-08-29T14:26:23Z"
+  generation: 5
+  name: cat-branch-readme
+  namespace: teste
+  resourceVersion: "778435"
+  uid: a5e86349-c2c4-476b-b96d-1de182735855
+spec:
+  description: |
+    cat-branch-readme takes a git repository and a branch name and
+    prints the README.md file from that branch. This is an example
+    Pipeline demonstrating the following:
+      - Using the git-clone catalog Task to clone a branch
+      - Passing a cloned repo to subsequent Tasks using a Workspace.
+      - Ordering Tasks in a Pipeline using "runAfter" so that
+        git-clone completes before we try to read from the Workspace.
+      - Using a volumeClaimTemplate Volume as a Workspace.
+      - Avoiding hard-coded paths by using a Workspace's path
+        variable instead.
+  params:
+  - default: https://github.com/abass0/poc-sonda-utilities
+    description: The git repository URL to clone from.
+    name: REPO_URL
+    type: string
+  - default: main
+    description: The git branch to clone.
+    name: BRANCH_NAME
+    type: string
+  - description: External container image
+    name: SOURCE_IMAGE
+    type: string
+  - default: "false"
+    name: SOURCE_TLS_VERIFY
+    type: string
+  - description: Internal container registry
+    name: DESTINATION_IMAGE
+    type: string
+  - default: "false"
+    name: DESTINATION_TLS_VERIFY
+    type: string
+  - default: cs-api-servicos-online
+    description: Application name
+    name: APP_NAME
+    type: string
+  - default: oc apply -k environments/qa
+    description: Stage specific manifests
+    name: SCRIPT_STAGE
+    type: string
+  tasks:
+  - name: clone-repo
+    params:
+    - name: url
+      value: $(params.REPO_URL)
+    - name: revision
+      value: $(params.BRANCH_NAME)
+    runAfter:
+    - copy-image
+    taskRef:
+      kind: Task
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-data
+  - name: cat-readme
+    runAfter:
+    - clone-repo
+    taskSpec:
+      metadata: {}
+      spec: null
+      steps:
+      - computeResources: {}
+        image: zshusers/zsh:4.3.15
+        name: ""
+        script: |
+          #!/usr/bin/env zsh
+          cat $(workspaces.source.path)/README.md
+      workspaces:
+      - name: source
+    workspaces:
+    - name: source
+      workspace: shared-data
+  - name: copy-image
+    params:
+    - name: SOURCE_IMAGE
+      value: $(params.SOURCE_IMAGE)
+    - name: SOURCE_TLS_VERIFY
+      value: $(params.SOURCE_TLS_VERIFY)
+    - name: DESTINATION_IMAGE
+      value: $(params.DESTINATION_IMAGE)
+    - name: DESTINATION_TLS_VERIFY
+      value: $(params.DESTINATION_TLS_VERIFY)
+    taskRef:
+      kind: Task
+      name: copy-image
+  - name: deploy-qa
+    params:
+    - name: SCRIPT
+      value: $(params.SCRIPT_STAGE)
+    - name: VERSION
+      value: latest
+    runAfter:
+    - cat-readme
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client
+    workspaces:
+    - name: manifest-dir
+      workspace: shared-data
+  - name: tag-image
+    params:
+    - name: SCRIPT
+      value: '   oc tag teste/$(params.APP_NAME):4231 cs-qa/$(params.APP_NAME):promote-stage'
+    - name: VERSION
+      value: latest
+    runAfter:
+    - deploy-qa
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client
+  workspaces:
+  - description: |
+      This workspace will receive the cloned git repo and be passed
+      to the next Task for the repo's README.md file to be read.
+    name: shared-data
