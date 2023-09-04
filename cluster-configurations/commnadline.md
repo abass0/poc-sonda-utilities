@@ -1,4 +1,4 @@
-## Command Line Resources 
+# Command Line Resources 
 
 **srcImage:** `docker://containerregistrycs.azurecr.io/cs-api-servicos-online:4231`
 
@@ -17,3 +17,4 @@ oc adm policy add-role-to-user system:image-puller system:serviceaccounts:cs-hom
 
 oc adm policy add-role-to-user system:deployer system:serviceaccounts:cs-qa -n cs-homolog
 ```  
+
