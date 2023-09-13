@@ -2,7 +2,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: sonda-cs-api-trig-template
+  name: cs-api-trig-template
 spec:
   params:
     - name: git-revision
@@ -16,7 +16,7 @@ spec:
       kind: PipelineRun
       metadata:
         labels:
-          tekton.dev/pipeline: cs-api-servicos-online
+          tekton.dev/pipeline: cs-api-pipeline
         name: cs-api-$(uid)
       spec:
         params:

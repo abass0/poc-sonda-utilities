@@ -2,7 +2,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: sonda-csi-api-trigger
+  name: cs-api-trigger
 spec:
   params:
   - name: git-repo-url
